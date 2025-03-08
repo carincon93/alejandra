@@ -1,12 +1,66 @@
 ---
-import background from "../assets/background.svg";
-import AlejaCanvas from "./Aleja";
+import background from "@/assets/background.svg";
 ---
 
 <div id="container">
   <img id="background" src={background.src} alt="" fetchpriority="high" />
   <main>
-    <AlejaCanvas client:load />
+    <div class="relative w-[500px] -left-[70px] -top-[100px]">
+      <div id="dialog" role="dialog">
+        <div
+          class="bg-white shadow-sm p-4 rounded-md fixed flex flex-col items-center justify-center w-[40dvh] h-[40dvh] inset-0 mx-auto top-[20dvh] z-10"
+        >
+          <p class="text-center leading-[1.5] text-sm mt-8">
+            Selecciona cada una de las cartas. Empieza por la número 1.
+          </p>
+          <button
+            id="start-btn"
+            class="bg-black p-2 text-white rounded-md block mt-4 w-full"
+          >
+            Comenzar
+          </button>
+        </div>
+      </div>
+
+      <div id="canvas-container" class="hidden">
+        <div id="message-box" class="hidden">
+          <div
+            class="bg-white shadow-sm p-4 rounded-md fixed w-[40dvh] h-[40dvh] inset-0 mx-auto top-[20dvh] z-10"
+          >
+            <h1 class="font-bold text-center">Feliz día de la mujer</h1>
+            <p class="text-center leading-[1.5] text-sm mt-8">
+              ¡Feliz día, Aleja! ✨ Eres una mujer increíblemente valiente. A
+              pesar de los momentos difíciles, sigues en pie, iluminando la vida
+              de quienes más te quieren. Nunca dejes de sonreír.
+            </p>
+          </div>
+        </div>
+
+        <button
+          id="btn-1"
+          class="absolute top-[350px] p-6 shadow-sm bg-white rounded-md opacity-0 transition-opacity delay-150"
+        >
+          1
+        </button>
+        <button
+          class="absolute top-[250px] left-[200px] p-6 shadow-sm bg-white/40 rounded-md opacity-0 transition-opacity delay-150"
+        >
+          2
+        </button>
+        <button
+          class="absolute top-[200px] right-0 p-6 shadow-sm bg-white/40 rounded-md opacity-0 transition-opacity delay-150"
+        >
+          4
+        </button>
+        <button
+          class="absolute top-[200px] p-6 shadow-sm bg-white/40 rounded-md opacity-0 transition-opacity delay-150"
+        >
+          3
+        </button>
+
+        <canvas id="canvas-aleja" width="575" height="770"></canvas>
+      </div>
+    </div>
   </main>
 </div>
 
@@ -33,3 +87,54 @@ import AlejaCanvas from "./Aleja";
     justify-content: center;
   }
 </style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const startBtn = document.getElementById("start-btn");
+    const dialog = document.getElementById("dialog");
+    const canvasContainer = document.getElementById("canvas-container");
+    const messageBox = document.getElementById("message-box");
+    const btn1 = document.getElementById("btn-1");
+    const buttons = document.querySelectorAll("#canvas-container button");
+
+    function createRiveInstance(canvasId) {
+      const canvasElement = document.getElementById(canvasId);
+      if (!canvasElement) {
+        console.error(`Canvas with id "${canvasId}" not found.`);
+        return;
+      }
+
+      try {
+        new rive.Rive({
+          src: "/alejandra/animations/aleja.riv",
+          canvas: canvasElement,
+          autoplay: true,
+          artboard: "Artboard",
+          stateMachines: "State Machine 1",
+        });
+      } catch (error) {
+        console.error(
+          `Error initializing Rive animation for ${canvasId}:`,
+          error
+        );
+      }
+    }
+
+    startBtn.addEventListener("click", function () {
+      dialog.classList.add("hidden");
+      canvasContainer.classList.remove("hidden");
+
+      setTimeout(() => {
+        createRiveInstance("canvas-aleja");
+      }, 500);
+
+      setTimeout(() => {
+        buttons.forEach((btn) => btn.classList.remove("opacity-0"));
+      }, 2500);
+    });
+
+    btn1.addEventListener("click", function () {
+      messageBox.classList.remove("hidden");
+    });
+  });
+</script>
