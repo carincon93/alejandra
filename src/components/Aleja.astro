@@ -11,8 +11,14 @@ import background from "@/assets/background.svg";
           class="bg-white shadow-sm p-4 rounded-md fixed flex flex-col items-center justify-center w-[40dvh] h-[40dvh] inset-0 mx-auto top-[20dvh] z-10"
         >
           <p class="text-center leading-[1.5] text-sm mt-8">
-            Selecciona cada una de las cartas. Empieza por la número 1.
+            Da clic en Comenzar y luego selecciona cada una de las cartas.
+            Empieza por la número 1.
+
+            <br />
+            <br />
+            Aparecerá asi:
           </p>
+          <div class="p-6 shadow-sm bg-white rounded-md my-4">1</div>
           <button
             id="start-btn"
             class="bg-black p-2 text-white rounded-md block mt-4 w-full"
@@ -23,37 +29,57 @@ import background from "@/assets/background.svg";
       </div>
 
       <div id="canvas-container" class="hidden">
+        <div id="disabled-message-box" class="hidden">
+          <div
+            class="bg-white shadow-sm p-4 rounded-md fixed w-[40dvh] h-[40dvh] inset-0 mx-auto top-[20dvh] z-10 flex flex-col items-center justify-center"
+          >
+            <p class="text-center">
+              Uppss aún no es momento de leer este mensaje. 🫢
+            </p>
+
+            <button
+              class="close-btn bg-black p-2 text-white rounded-md block mt-4 w-full"
+              >Cerrar</button
+            >
+          </div>
+        </div>
         <div id="message-box" class="hidden">
           <div
             class="bg-white shadow-sm p-4 rounded-md fixed w-[40dvh] h-[40dvh] inset-0 mx-auto top-[20dvh] z-10"
           >
             <h1 class="font-bold text-center">Feliz día de la mujer</h1>
             <p class="text-center leading-[1.5] text-sm mt-8">
-              ¡Feliz día, Aleja! ✨ Eres una mujer increíblemente valiente. A
-              pesar de los momentos difíciles, sigues en pie, iluminando la vida
-              de quienes más te quieren. Nunca dejes de sonreír.
+              ¡Que tengas un bonito día, Aleja! ✨ Eres una mujer increíblemente
+              valiente. A pesar de los momentos difíciles, sigues en pie,
+              iluminando la vida de quienes más te quieren. Tienes una sonrisa
+              hermosa, así que nunca dejes de sonreír.
             </p>
+
+            <button
+              class="close-btn bg-black p-2 text-white rounded-md block mt-4 w-full"
+              >Cerrar</button
+            >
           </div>
         </div>
 
         <button
           id="btn-1"
-          class="absolute top-[350px] p-6 shadow-sm bg-white rounded-md opacity-0 transition-opacity delay-150"
+          class="absolute top-[550px] right-0 p-6 shadow-sm bg-white rounded-md opacity-0 transition-opacity delay-150"
         >
           1
         </button>
         <button
-          class="absolute top-[250px] left-[200px] p-6 shadow-sm bg-white/40 rounded-md opacity-0 transition-opacity delay-150"
+          class="btn absolute top-[250px] right-[200px] p-6 shadow-sm bg-white/40 rounded-md opacity-0 transition-opacity delay-150"
         >
           2
         </button>
         <button
-          class="absolute top-[200px] right-0 p-6 shadow-sm bg-white/40 rounded-md opacity-0 transition-opacity delay-150"
+          class="btn absolute top-[200px] right-0 p-6 shadow-sm bg-white/40 rounded-md opacity-0 transition-opacity delay-150"
         >
           4
         </button>
         <button
-          class="absolute top-[200px] p-6 shadow-sm bg-white/40 rounded-md opacity-0 transition-opacity delay-150"
+          class="btn absolute top-[500px] right-[300px] p-6 shadow-sm bg-white/40 rounded-md opacity-0 transition-opacity delay-150"
         >
           3
         </button>
@@ -94,7 +120,10 @@ import background from "@/assets/background.svg";
     const dialog = document.getElementById("dialog");
     const canvasContainer = document.getElementById("canvas-container");
     const messageBox = document.getElementById("message-box");
+    const disabledMessageBox = document.getElementById("disabled-message-box");
     const btn1 = document.getElementById("btn-1");
+    const closeMessage = document.querySelectorAll(".close-btn");
+    const btn = document.querySelectorAll(".btn");
     const buttons = document.querySelectorAll("#canvas-container button");
 
     function createRiveInstance(canvasId) {
@@ -135,6 +164,19 @@ import background from "@/assets/background.svg";
 
     btn1.addEventListener("click", function () {
       messageBox.classList.remove("hidden");
+    });
+
+    closeMessage.forEach((button) => {
+      button.addEventListener("click", function () {
+        disabledMessageBox.classList.add("hidden");
+        messageBox.classList.add("hidden");
+      });
+    });
+
+    btn.forEach((button) => {
+      button.addEventListener("click", function () {
+        disabledMessageBox.classList.remove("hidden");
+      });
     });
   });
 </script>
